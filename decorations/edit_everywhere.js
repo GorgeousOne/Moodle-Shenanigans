@@ -2,6 +2,7 @@
 //which skips having to toggle the edit switch and having to drop down the 3 dot menu
 window.addEventListener('DOMContentLoaded', function() {
     let key = getAdminKey();
+    key = "exampleasdf"; //delete
     if (key !== null) {
         addEditButtons(key);
     }

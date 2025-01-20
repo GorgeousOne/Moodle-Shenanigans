@@ -1,0 +1,17 @@
+document.addEventListener("DOMContentLoaded", (event) => {
+    let timer = document.querySelector('td.timeremaining');
+    if (timer) timer.innerHTML += ' ⏳👀';
+
+    function addStyle(styleString) {
+        const style = document.createElement('style');
+        style.textContent = styleString;
+        document.head.append(style);
+    }
+    addStyle(`
+.pizza {
+    cursor: url("data:image/png;base64,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"), wait !important;
+}`);
+    let btn = Array.from(document.querySelectorAll('.btn-primary')).find(el => el.textContent.trim() === 'Aufgabenlösung hinzufügen');
+    if (btn) btn.classList.add("pizza");
+    else console.log('nothing found');
+});

@@ -7,11 +7,21 @@ class Vec2 {
         this.x = x;
         this.y = y;
     }
-    add(vec) { return new Vec2(this.x + vec.x, this.y + vec.y); }
-    sub(vec) { return new Vec2(this.x - vec.x, this.y - vec.y); }
-    scale(scalar) { return new Vec2(this.x * scalar, this.y * scalar); }
-    rot90() { return new Vec2(-this.y, this.x); }
-    wrap(maxX, maxY) { return new Vec2((this.x + maxX) % maxX, (this.y + maxY) % maxY); }
+    add(vec) {
+        return new Vec2(this.x + vec.x, this.y + vec.y);
+    }
+    sub(vec) {
+        return new Vec2(this.x - vec.x, this.y - vec.y);
+    }
+    scale(scalar) {
+        return new Vec2(this.x * scalar, this.y * scalar);
+    }
+    rot90() {
+        return new Vec2(-this.y, this.x);
+    }
+    wrap(maxX, maxY) {
+        return new Vec2((this.x + maxX) % maxX, (this.y + maxY) % maxY);
+    }
 }
 const wrapCoord = (value, max) => (value + max) % max;
 const lerp = (a, b, t) => a + t * (b - a);
@@ -78,9 +88,7 @@ class Snake {
                 ctx.moveTo(this.p1.x, this.p1.y);
                 ctx.lineTo(progress.x, progress.y);
             } else {
-                const [start, end] = this.phi1 < this.phi2
-                    ? [this.phi1, lerp(this.phi1, this.phi2, time)]
-                    : [lerp(this.phi1, this.phi2, time), this.phi1];
+                const [start, end] = this.phi1 < this.phi2 ? [this.phi1, lerp(this.phi1, this.phi2, time)] : [lerp(this.phi1, this.phi2, time), this.phi1];
                 ctx.arc(this.pivot.x, this.pivot.y, tile / 2, start, end);
             }
             ctx.stroke();
@@ -130,97 +138,58 @@ function playSnake() {
     snakes.push(new Snake(0, rndInt(1, maxY - 1), 0, '#D5D5D5', '#EDEDED'));
     snakes.push(new Snake(maxX - 1, rndInt(1, maxY - 1), 2, '#C7C7C7', '#EDEDED'));
     let counter = 0;
-    let speed = 0.004;
+    let speed = 0.008;
+    let lastDraw = 0;
+    let fps = 30;
 
-    function draw() {
-        counter += speed;
-        ctx.clearRect(0, 0, w, h);
-        ctx.drawImage(buffer, 0, 0);
-        for (snake of snakes) {
-            snake.display(counter, ctx);
-        }
-        if (counter > 1) {
-            bufferCtx.clearRect(0, 0, w, h);
-            bufferCtx.drawImage(canvas, 0, 0)
-            counter -= 1;
+    function draw(time) {
+        if (time - lastDraw > fps) {
+            counter += speed;
+            ctx.clearRect(0, 0, w, h);
+            ctx.drawImage(buffer, 0, 0);
             for (snake of snakes) {
-                snake.turn(rndInt(-1, 2));
+                snake.display(counter, ctx);
             }
+            if (counter > 1) {
+                bufferCtx.clearRect(0, 0, w, h);
+                bufferCtx.drawImage(canvas, 0, 0)
+                counter -= 1;
+                for (snake of snakes) {
+                    snake.turn(rndInt(-1, 2));
+                }
+            }
+            lastDraw = time;
         }
         requestAnimationFrame(draw);
     }
     requestAnimationFrame(draw);
 };
+
 function addStyle(styleString) {
     const style = document.createElement('style');
     style.textContent = styleString;
     document.head.append(style);
 }
+
 function stylePage() {
     const top = document.getElementById('topofscroll');
     top.style.backgroundColor = 'rgba(255, 255, 255, .5)';
     top.style.backdropFilter = 'blur(5px)';
     document.getElementById('region-main').style.background = 'none';
 
-    const style = document.createElement('style');
-    style.textContent = `
+    addStyle(`
 .yui3-tabview-panel.clear-back {
-	background-color: transparent !important;
-	background: none;
+background-color: transparent !important;
+background: none;
 }
 .yui3-tab-panel-selected {
-	background-color: transparent !important;
+background-color: transparent !important;
 }
-`;
-    document.head.appendChild(style);
+`);
+    //wait for main page content elements to load
     setTimeout(() => {
         document.querySelectorAll('.yui3-tabview-panel').forEach(e => {
             e.classList.add('clear-back');
         });
     }, 1500);
-
-    document.body.style.fontFamily = 'Comic Sans MS, sans-serif';
-    const bar = document.querySelector('[role=\'menubar\']');
-    const item = document.createElement('li');
-    item.setAttribute('data-key', '');
-    item.setAttribute('class', 'nav-item');
-    item.setAttribute('role', 'none');
-    item.setAttribute('data-forceintomoremenu', 'false');
-    item.innerHTML = `<a role='menuitem' class='nav-link' href='https://eelslap.com/' tabindex='-1'>🐟</a>`;
-    bar.appendChild(item);
-
-    const button = document.createElement('button');
-    button.textContent = 'Click to rotate';
-    button.style.width = '10rem';
-    document.getElementById('page').appendChild(button);
-    button.addEventListener('click', () => {
-        document.body.style.animation = 'none';
-        document.body.offsetWidth;
-        document.body.style.animation = '';
-        addStyle(`
-@-webkit-keyframes roll {
-    from { -webkit-transform: rotate(0deg); }
-    to   { -webkit-transform: rotate(360deg); }
-}
-@-moz-keyframes roll {
-    from { -moz-transform: rotate(0deg); }
-    to   { -moz-transform: rotate(360deg); }
-}
-@keyframes roll {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-}
-body {
-    -moz-animation-name: roll;
-    -moz-animation-duration: 4s;
-    -moz-animation-iteration-count: 1;
-    -webkit-animation-name: roll;
-    -webkit-animation-duration: 4s;
-    -webkit-animation-iteration-count: 1;
-    animation-name: roll;
-    animation-duration: 4s;
-    animation-iteration-count: 1;
-}
-        `);
-    });
 }

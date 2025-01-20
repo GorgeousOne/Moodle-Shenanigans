@@ -1,6 +1,7 @@
 const main = document.getElementById('topofscroll');
 const hat = document.getElementById('santa-hat');
 let style = document.createElement('style');
+
 style.textContent = `
 #santa-hat {
     position: absolute;

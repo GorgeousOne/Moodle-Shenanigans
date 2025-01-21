@@ -1,6 +1,5 @@
 let mouseX = 0;
 let mouseY = 0;
-console.log("hello");
 
 document.addEventListener('mousemove', (event) => {
 	mouseX = event.clientX;
@@ -106,27 +105,28 @@ const imgs = {
 	noise: document.getElementById("darkNoise"),
 	frame: document.getElementById("frameBorder"),
 	featherLeft: document.getElementById("featherLeft"),
-	featherRight: document.getElementById("featherRight")
+	featherRight: document.getElementById("featherRight"),
+	ring1: document.getElementById('ring1'),
+	ring2: document.getElementById('ring2')
 };
 
-	const style = document.createElement('style');
-
-	style.textContent = `
+const style = document.createElement('style');
+style.textContent = `
 @keyframes rainbowCycle {
-	0% {color: #ff1d87;}
-	16% {color: #a071ff;}
-	33% {color: #40b9ff;}
-	50% {color: #15ff57;}
-	66% {color: #ffed29;}
-	83% {color: #ff5f2e;}
-	100% {color: #ff1d87;}
+0% {color: #ff1d87;}
+16% {color: #a071ff;}
+33% {color: #40b9ff;}
+50% {color: #15ff57;}
+66% {color: #ffed29;}
+83% {color: #ff5f2e;}
+100% {color: #ff1d87;}
 }
 
 /* noble font */
 body {
-	font-family: Georgia, 'Times New Roman', Times, serif;
-	font-variant: small-caps;
-	color: #fff;
+font-family: Georgia, 'Times New Roman', Times, serif;
+font-variant: small-caps;
+color: #fff;
 }
 
 .material-symbols-outlined {
@@ -136,37 +136,37 @@ filter: invert();
 
 /* humble navigation bar */
 .navbar.fixed-top {
-	background-color: #000 !important;
-	background-image: url(${imgs.border.src}), url(${imgs.noise.src});
-	background-size: 100% 100%, auto;
-	box-shadow: inset 0 0 7px rgba(255, 255, 255, 0.2);
-	border: 0;
+background-color: #000 !important;
+background-image: url(${imgs.border.src}), url(${imgs.noise.src});
+background-size: 100% 100%, auto;
+box-shadow: inset 0 0 7px rgba(255, 255, 255, 0.2);
+border: 0;
 }
 
 .navbar-brand {
-	color: white !important;
+color: white !important;
 }
 
 /* prevent white flickering before images load */
 #page {
-	background-color: #000;
+background-color: #000;
 }
 
 /* dignified main area */
 #topofscroll {
-	background-color: #000 !important;
-	border: 3px solid transparent;
-	border-image: url(${imgs.frame.src}) 3 round;
-	border-radius: 2px;
-	background-image: url(${imgs.border.src}), url(${imgs.noise.src});
-	background-size: 100% 100%, auto;
+background-color: #000 !important;
+border: 3px solid transparent;
+border-image: url(${imgs.frame.src}) 3 round;
+border-radius: 2px;
+background-image: url(${imgs.border.src}), url(${imgs.noise.src});
+background-size: 100% 100%, auto;
 }
 
 #region-main {
-	background-color: transparent !important;
+background-color: transparent !important;
 }
 .activity-header {
-	background-color:transparent !important;
+background-color:transparent !important;
 }
 
 
@@ -177,63 +177,136 @@ filter: invert();
 .page-context-header { justify-content: center; }
 
 .navicon-seperator {
-	filter: invert();
+filter: invert();
 }
 
 /* striking title */
 .h2 {
-	color: #ece2b6;
-	text-shadow: 0px 1px 0px #733726, 0px 2px 0px #875626, 0px 2px 1px #000, 0px 2px 3px #000;
+color: #ece2b6;
+text-shadow: 0px 1px 0px #733726, 0px 2px 0px #875626, 0px 2px 1px #000, 0px 2px 3px #000;
 }
 
 /* fancy ornaments */
 .h2:before {
-	background: url(${imgs.featherLeft.src}) no-repeat;
-	left: -39px;
+background: url(${imgs.featherLeft.src}) no-repeat;
+left: -39px;
 }
 .h2:after {
-	background: url(${imgs.featherRight.src}) no-repeat;
-	right: -39px;
+background: url(${imgs.featherRight.src}) no-repeat;
+right: -39px;
 }
 .h2:before, .h2:after {
-	content: '';
-	display: block;
-	width: 39px;
-	height: 23px;
-	position: absolute;
-	top: 8px;
+content: '';
+display: block;
+width: 39px;
+height: 23px;
+position: absolute;
+top: 8px;
 }
 
 /* arcane submission button */
 div[role="main"] .btn-primary {
-	background: linear-gradient(to bottom, transparent 0%, currentColor 500%);
-	padding: 8px 16px;
-	animation: rainbowCycle 5s infinite ease-in-out;
-	box-shadow: 0px 0px 0px 1px #000, 0px 0px 1px 2px currentcolor !important;
-	background: linear-gradient(to bottom, transparent 0%, currentColor 500%);
-	border-color: #ece2b6 #875526 #733726 #dfbc9a;
-	border-radius: 0;
-	font-family: Georgia, 'Times New Roman', Times, serif;
-	font-variant: small-caps;
+background: linear-gradient(to bottom, transparent 0%, currentColor 500%);
+padding: 8px 16px;
+animation: rainbowCycle 5s infinite ease-in-out;
+box-shadow: 0px 0px 0px 1px #000, 0px 0px 1px 2px currentcolor !important;
+background: linear-gradient(to bottom, transparent 0%, currentColor 500%);
+border-color: #ece2b6 #875526 #733726 #dfbc9a;
+border-radius: 0;
+font-family: Georgia, 'Times New Roman', Times, serif;
+font-variant: small-caps;
 }
 div[role=main] .row {
-	justify-content: center;
+justify-content: center;
 }
 
-
 .generaltable {
-	color: white;
-	font-family: Georgia, 'Times New Roman', Times, serif;
-	font-variant: small-caps;
+color: white;
+font-family: Georgia, 'Times New Roman', Times, serif;
+font-variant: small-caps;
 }
 
 .generaltable tbody tr:hover {
-	color: white;
+color: white;
 }
 
 .custom-select {
-	background-color: #181A1B !important;
+background-color: #181A1B !important;
+}
+
+.button-container {
+position: relative;
+display: inline-block;
+}
+
+.button-container img {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: auto;
+z-index: 0; /* Behind the button */
+pointer-events: none; /* Ensure the image does not block clicks */
+}
+
+#ring1 {
+width: 75%;
+animation-delay: 0s;
+animation: rotateAnimation 60s infinite linear;
+mix-blend-mode: lighten;
+opacity: 0.5;
+}
+
+#ring2 {
+width: 80%;
+animation-delay: -15s;
+animation: rotateAnimation 100s infinite linear;
+mix-blend-mode: lighten;
+opacity: 0.5;
+}
+
+@keyframes rotateAnimation {
+	0% {transform: translate(-50%, -50%) scale(1) rotate(0deg);}
+	10% {transform: translate(-50%, -50%) scale(1.25) rotate(36deg);}
+	20% {transform: translate(-50%, -50%) scale(1) rotate(72deg);}
+	30% {transform: translate(-50%, -50%) scale(1.25) rotate(108deg);}
+	40% {transform: translate(-50%, -50%) scale(1) rotate(144deg);}
+	50% {transform: translate(-50%, -50%) scale(1.25) rotate(180deg);}
+	60% {transform: translate(-50%, -50%) scale(1) rotate(206deg);}
+	70% {transform: translate(-50%, -50%) scale(1.25) rotate(242deg);}
+	80% {transform: translate(-50%, -50%) scale(1) rotate(278deg);}
+	90% {transform: translate(-50%, -50%) scale(1.25) rotate(324deg);}
+	100% {transform: translate(-50%, -50%) scale(1) rotate(360deg);}
 }`;
-
-
 document.head.appendChild(style);
+
+function waitForElm(selector) {
+	return new Promise(resolve => {
+		if (document.querySelector(selector)) {
+			return resolve(document.querySelector(selector));
+		}
+		const observer = new MutationObserver(mutations => {
+			if (document.querySelector(selector)) {
+				observer.disconnect();
+				resolve(document.querySelector(selector));
+			}
+		});
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+	});
+}
+waitForElm('div[role="main"] .btn-primary').then((button) => {
+	// wrap submit button in container to add swirling mist background
+	const parent = button.parentElement;
+	const buttonContainer = document.createElement('div');
+	buttonContainer.className = 'button-container';
+	imgs.ring1.style.display = '';
+	imgs.ring2.style.display = '';
+
+	buttonContainer.appendChild(imgs.ring1);
+	buttonContainer.appendChild(imgs.ring2);
+	buttonContainer.appendChild(button);
+	parent.appendChild(buttonContainer);
+});

@@ -73,21 +73,6 @@
                             <span class="notifications" id="user-notifications"></span>
                             <div role="main"><span id="maincontent"></span>
 
-                                <!-- >>>>>>>>>>>>>>>>>>>> -->
-                                <!-- <div data-rel="fatalerror" class="box py-3 errorbox alert alert-danger">
-                                    <p class="errormessage">Der Datensatz kann nicht in der Datenbanktabelle course
-                                        gefunden werden.</p>
-                                    <p class="errorcode"><a
-                                            href="http://docs.moodle.org/401/de/error/moodle/invalidrecord"
-                                            target="_blank" id="yui_3_17_2_1_1748545519529_39">Weitere Informationen
-                                            über diesen Fehler</a></p>
-                                </div>
-                                <div class="continuebutton">
-                                    <form method="get" action="https://moodle.uni-weimar.de/">
-                                        <button type="submit" class="btn btn-primary">Weiter</button>
-                                    </form>
-                                </div> -->
-                                <!-- <<<<<<<<<<<<<<<<<<<< -->
 
                                 <div class="course-content">
                                     <script type="text/javascript">
@@ -100,7 +85,7 @@
                                             --courseformat-tabtopics-marker: #005f56;
                                         }
                                     </style>
-                                    <div id="maincontainer" class="format_tabtopics" style="">
+                                    <div id="maincontainer" class="format_tabtopics">
                                         <ul class="sectionul">
                                             <li id="sectiontd-0" class="section main yui3-dd-drop">
                                                 <div class="content">
@@ -264,12 +249,9 @@ const errorHtml = `
             target="_blank" id="yui_3_17_2_1_1748545519529_39">Weitere Informationen über diesen Fehler</a></p>
 </div>
 <div class="continuebutton">
-    <form method="get" action="https://moodle.uni-weimar.de/">
-        <button type="submit" class="btn btn-primary">Weiter</button>
-    </form>
+        <!-- <a href="https://moodle.uni-weimar.de/" class="btn btn-primary">Weiter</button> -->
+        <a href="/error/Moodle.htm" class="btn btn-primary">Weiter</button>
 </div>`;
-const maincontainer = document.querySelector('#maincontainer');
-//maincontainer.style.display = 'none';
 
 const breadcrumb = document.querySelector('.breadcrumb');
 breadcrumb.querySelectorAll('li').forEach((item, index) => {
@@ -280,18 +262,42 @@ document.querySelector('#page-header h1').textContent = 'Lernplattform Bauhaus-U
 document.title = "Fehler | Lernplattform Bauhaus-Universität Weimar";
 
 //... i dont have them in this demo, causes an error
-const drawers = document.querySelector('.drawer-tabs');
-const blocks = document.querySelector('[data-tab-index="blocks"]');
-drawers.style.display = 'none';
-blocks.style.display = 'none';
+//const drawers = document.querySelector('.drawer-tabs');
+//const blocks = document.querySelector('[data-tab-index="blocks"]');
+//drawers.style.display = 'none';
+//blocks.style.display = 'none';
 
 const main = document.querySelector('[role="main"]');
 main.insertAdjacentHTML('afterbegin', errorHtml);
 
-//unhide hotkey
+//delay all links by x seconds
+document.querySelectorAll('a').forEach(link => {
+    const href = link.getAttribute('href');
+    link.addEventListener('click', function (event) {
+        event.preventDefault();
+        setTimeout(() => {window.location.href = href;}, 2000);
+        showLoading(new Promise(r => setTimeout(r, 3000)));
+    });
+});
+
+function showLoading(promise) {
+    try {
+        navigation.addEventListener('navigate', evt => {
+            evt.intercept({
+                scroll: 'manual',
+                handler: () => promise,
+            });
+        }, {once: true});
+        return navigation.navigate(location.href).finished;
+    }catch(e) {}
+}
+
+
+//unhide course hotkey
 let hideCourse = true;
 const error = document.querySelector('.errorbox');
 const continueBtn = document.querySelector('.continuebutton');
+const maincontainer = document.querySelector('#maincontainer');
 
 document.addEventListener('keydown', function (event) {
     if (event.altKey && event.key=== 'h') {
